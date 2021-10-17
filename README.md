@@ -12,7 +12,7 @@ This repo currently contains the following packages:
 
 [twitter]: https://twitter.com/creativemaybeno
 [twitter badge]: https://img.shields.io/twitter/follow/creativemaybeno?label=Follow&style=social
-[example]: https://performance.creativemaybeno.dev
+[demo]: https://performance.creativemaybeno.dev
 [demo badge]: https://img.shields.io/badge/web-demo-yellow
 [performance]: https://github.com/creativecreatorormaybenot/performance/tree/main/performance
 [pub]: https://pub.dev/packages/performance

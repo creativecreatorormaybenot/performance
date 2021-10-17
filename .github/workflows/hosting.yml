@@ -28,7 +28,7 @@ jobs:
 
       - name: Build demo web app
         run: |
-          cd performance
+          cd performance/example
           flutter pub get
           flutter build web
           cd build/web

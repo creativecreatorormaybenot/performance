@@ -16,6 +16,7 @@ dependencies:
   performance:
     path: ../
 
+  funvas: ^0.1.4+1
   url_strategy: ^0.2.0
 
 dev_dependencies:

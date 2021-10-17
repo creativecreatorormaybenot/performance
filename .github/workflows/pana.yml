@@ -1,0 +1,27 @@
+name: pana
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/publish.yml'
+      - 'performance/pubspec.yaml'
+
+jobs:
+  configure:
+    timeout-minutes: 9
+    runs-on: ubuntu-latest
+    name: ${{ matrix.package }} configuration
+    strategy:
+      matrix:
+        package:
+          - 'performance'
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2.3.5
+      - uses: axel-op/dart-package-analyzer@v3
+        with:
+          relativePath: ${{ matrix.package }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}

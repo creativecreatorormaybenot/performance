@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funvas/funvas.dart';
 import 'package:performance_example/widgets/funvas.dart';

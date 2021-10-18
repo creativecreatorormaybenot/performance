@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funvas/funvas.dart';
 import 'package:performance_example/widgets/funvas.dart';
@@ -35,40 +36,58 @@ class _HomePage extends StatefulWidget {
 class _HomePageState extends State<_HomePage> {
   late final _funvas = ExampleFunvas();
 
-  var _funvasSize = 3 / 4;
+  var _funvasSize = 5 / 8;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
         children: [
+          const Spacer(),
           Expanded(
             flex: 2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FractionallySizedBox(
-                  widthFactor: _funvasSize,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: FunvasContainer(
-                      funvas: _funvas,
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FractionallySizedBox(
+                          widthFactor: _funvasSize,
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: FunvasContainer(
+                              funvas: _funvas,
+                            ),
+                          ),
+                        ),
+                        const Link(
+                          url: 'https://funvas.creativemaybeno.dev/#/32',
+                          body: Text('funvas animation'),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const Link(
-                  url: 'https://funvas.creativemaybeno.dev/#/32',
-                  body: Text('funvas animation'),
-                ),
-                Slider(
-                  min: 1 / 2,
-                  max: 1,
-                  value: _funvasSize,
-                  onChanged: (value) {
-                    setState(() {
-                      _funvasSize = value;
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 16,
+                  ),
+                  child: FractionallySizedBox(
+                    widthFactor: 3 / 4,
+                    child: Slider(
+                      min: 4 / 8,
+                      max: 6 / 8,
+                      value: _funvasSize,
+                      onChanged: (value) {
+                        setState(() {
+                          _funvasSize = value;
+                        });
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,6 @@
 {
-    "name": "performance_example",
-    "short_name": "performance_example",
+    "name": "performance overlay demo",
+    "short_name": "performance demo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

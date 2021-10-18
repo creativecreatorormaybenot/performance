@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart' as ull;
 import 'package:url_launcher/link.dart' show LinkTarget;

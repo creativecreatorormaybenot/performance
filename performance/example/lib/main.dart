@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:funvas/funvas.dart';
+import 'package:performance/performance.dart';
 import 'package:performance_example/widgets/funvas.dart';
 import 'package:performance_example/widgets/link.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -17,8 +18,11 @@ class ExampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'performance overlay demo',
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.amber,
+        colorScheme: ColorScheme.fromSwatch(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.amber,
+          accentColor: Colors.amberAccent,
+        ),
       ),
       home: const _HomePage(),
     );
@@ -35,64 +39,106 @@ class _HomePage extends StatefulWidget {
 class _HomePageState extends State<_HomePage> {
   late final _funvas = ExampleFunvas();
 
-  var _funvasSize = 5 / 8;
+  var _funvasSize = 3 / 4;
+  var _funvasPlaying = true;
+  var _overlayEnabled = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          const Spacer(),
-          Expanded(
-            flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FractionallySizedBox(
-                          widthFactor: _funvasSize,
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: FunvasContainer(
-                              funvas: _funvas,
+      body: CustomPerformanceOverlay(
+        enabled: _overlayEnabled,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: FractionallySizedBox(
+                      heightFactor: _funvasSize,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: FunvasContainer(
+                                paused: !_funvasPlaying,
+                                funvas: _funvas,
+                              ),
                             ),
                           ),
-                        ),
-                        const Link(
-                          url: 'https://funvas.creativemaybeno.dev/#/32',
-                          body: Text('funvas animation'),
-                        ),
-                      ],
+                          const Link(
+                            url: 'https://funvas.creativemaybeno.dev/#/32',
+                            body: Text('funvas animation'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 16,
-                  ),
-                  child: FractionallySizedBox(
-                    widthFactor: 3 / 4,
-                    child: Slider(
-                      min: 4 / 8,
-                      max: 6 / 8,
-                      value: _funvasSize,
-                      onChanged: (value) {
-                        setState(() {
-                          _funvasSize = value;
-                        });
-                      },
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 16,
+                    ),
+                    child: FractionallySizedBox(
+                      widthFactor: 5 / 8,
+                      child: Slider(
+                        min: 5 / 9,
+                        max: 8 / 9,
+                        value: _funvasSize,
+                        onChanged: (value) {
+                          setState(() {
+                            _funvasSize = value;
+                          });
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const Spacer(),
-        ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('play funvas'),
+                      Switch(
+                        activeColor: Theme.of(context).colorScheme.secondary,
+                        value: _funvasPlaying,
+                        onChanged: (value) {
+                          setState(() {
+                            _funvasPlaying = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('enable overlay'),
+                      Switch(
+                        activeColor: Theme.of(context).colorScheme.secondary,
+                        value: _overlayEnabled,
+                        onChanged: (value) {
+                          setState(() {
+                            _overlayEnabled = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

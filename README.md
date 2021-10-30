@@ -14,7 +14,7 @@ You can read the charts in the performance overlay like this:
   that cross that line turn red.
 * The overlay is divided into three charts.
   - UI: the time it takes the UI to build.
-  - Raster: the time it takes to rasterize the the frame.
+  - Raster: the time it takes to rasterize the frame.
   - High latency: the total time between vsync start and raster finish, i.e. the
     time it takes from an input to seeing the new frame.
 * The "max" value shows how long the worst sample in the displayed range took.

@@ -40,6 +40,7 @@ class _HomePageState extends State<_HomePage> {
   late final _funvas = ExampleFunvas();
 
   var _funvasSize = 3 / 4;
+  var _overlaySize = 1.0;
   var _funvasPlaying = false;
   var _overlayEnabled = true;
 
@@ -48,6 +49,7 @@ class _HomePageState extends State<_HomePage> {
     return Scaffold(
       body: CustomPerformanceOverlay(
         enabled: _overlayEnabled,
+        scale: _overlaySize,
         child: Row(
           children: [
             Expanded(
@@ -103,54 +105,67 @@ class _HomePageState extends State<_HomePage> {
               flex: 2,
               child: Stack(
                 children: [
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text('play funvas'),
-                            Switch(
-                              activeColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              value: _funvasPlaying,
-                              onChanged: (value) {
-                                setState(() {
-                                  _funvasPlaying = value;
-                                });
-                              },
-                            ),
-                          ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('play funvas'),
+                          Switch(
+                            activeColor:
+                                Theme.of(context).colorScheme.secondary,
+                            value: _funvasPlaying,
+                            onChanged: (value) {
+                              setState(() {
+                                _funvasPlaying = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('enable overlay'),
+                          Switch(
+                            activeColor:
+                                Theme.of(context).colorScheme.secondary,
+                            value: _overlayEnabled,
+                            onChanged: (value) {
+                              setState(() {
+                                _overlayEnabled = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Text(
+                        'interact with the demo to observe performance :)',
+                        textAlign: TextAlign.center,
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 16,
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text('enable overlay'),
-                            Switch(
-                              activeColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              value: _overlayEnabled,
-                              onChanged: (value) {
-                                setState(() {
-                                  _overlayEnabled = value;
-                                });
-                              },
-                            ),
-                          ],
+                        child: FractionallySizedBox(
+                          widthFactor: 5 / 8,
+                          child: Slider(
+                            min: 1 / 2,
+                            max: 3,
+                            value: _overlaySize,
+                            onChanged: (value) {
+                              setState(() {
+                                _overlaySize = value;
+                              });
+                            },
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  const Positioned(
-                    bottom: 32,
-                    left: 32,
-                    right: 32,
-                    child: Text(
-                      'interact with the demo to observe performance :)',
-                      textAlign: TextAlign.center,
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),

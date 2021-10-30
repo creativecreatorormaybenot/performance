@@ -17,6 +17,8 @@ class CustomPerformanceOverlay extends StatelessWidget {
   const CustomPerformanceOverlay({
     Key? key,
     this.enabled = true,
+    this.alignment = Alignment.topRight,
+    this.scale = 1,
     this.sampleSize = 32,
     this.targetFrameTime = const Duration(milliseconds: 16),
     this.barRangeMax = const Duration(milliseconds: 24),
@@ -39,6 +41,22 @@ class CustomPerformanceOverlay extends StatelessWidget {
   ///
   /// Defaults to true.
   final bool enabled;
+
+  /// Alignment of the whole overlay.
+  ///
+  /// The overlay is aligned within a stack that has a size determined by the
+  /// [child] that is passed.
+  ///
+  /// Defaults to [Alignment.topRight].
+  final Alignment alignment;
+
+  /// The value the overlay is scaled by.
+  ///
+  /// The overlay has a default size of 448x64 and is simply scaled by the
+  /// scale value using [Transform.scale].
+  ///
+  /// Defaults to `1`.
+  final double scale;
 
   /// How many frame timings will be stored for extrapolating the FPS and
   /// showing the bar chart.
@@ -118,21 +136,26 @@ class CustomPerformanceOverlay extends StatelessWidget {
       children: [
         child,
         if (enabled)
-          Positioned(
-            top: 0,
-            right: 0,
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: _CustomPerformanceOverlay(
-                sampleSize: sampleSize,
-                targetFrameTime: targetFrameTime,
-                barRangeMax: barRangeMax,
-                backgroundColor: backgroundColor,
-                textColor: textColor,
-                textBackgroundColor: textBackgroundColor,
-                uiColor: uiColor,
-                rasterColor: rasterColor,
-                highLatencyColor: highLatencyColor,
+          Positioned.fill(
+            child: Align(
+              alignment: alignment,
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: Transform.scale(
+                  alignment: alignment,
+                  scale: scale,
+                  child: _CustomPerformanceOverlay(
+                    sampleSize: sampleSize,
+                    targetFrameTime: targetFrameTime,
+                    barRangeMax: barRangeMax,
+                    backgroundColor: backgroundColor,
+                    textColor: textColor,
+                    textBackgroundColor: textBackgroundColor,
+                    uiColor: uiColor,
+                    rasterColor: rasterColor,
+                    highLatencyColor: highLatencyColor,
+                  ),
+                ),
               ),
             ),
           ),

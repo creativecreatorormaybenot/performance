@@ -1,1 +1,1 @@
-export 'src/overlay.dart';
+export 'package:performance/src/overlay.dart';

@@ -17,6 +17,9 @@ class CustomPerformanceOverlay extends StatelessWidget {
   const CustomPerformanceOverlay({
     Key? key,
     this.enabled = true,
+    this.sampleSize = 32,
+    this.targetFrameTime = const Duration(milliseconds: 16),
+    this.barRangeMax = const Duration(milliseconds: 24),
     this.backgroundColor = Colors.white,
     this.textColor = Colors.black,
     this.textBackgroundColor = const Color(0x77ffffff),
@@ -36,6 +39,43 @@ class CustomPerformanceOverlay extends StatelessWidget {
   ///
   /// Defaults to true.
   final bool enabled;
+
+  /// How many frame timings will be stored for extrapolating the FPS and
+  /// showing the bar chart.
+  ///
+  /// The FPS values are computed based on the last `n = sampleSize` samples,
+  /// which are also the samples visible in the chart.
+  /// Note that the first few readings will be below the sample size until
+  /// enough samples have been collected.
+  ///
+  /// Defaults to `32`.
+  final int sampleSize;
+
+  /// The target time for every single frame.
+  ///
+  /// If a frame takes longer than this target time, the corresponding bar in
+  /// the bar chart turns red and the average FPS as well as it will be below
+  /// the target value.
+  ///
+  /// To calculate the target frame timing for your desired FPS value, use
+  /// `(1000 / targetFPS).floor()` to get the timing in ms.
+  ///
+  /// This also draws a line at `y = targetFrameTime` indicating the goal time
+  /// span for frames.
+  ///
+  /// Defaults to 16ms, which corresponds to 60 FPS.
+  final Duration targetFrameTime;
+
+  /// The max value of the visible range of the bar chart.
+  ///
+  /// This indicates the largest visible value on the y-axis for the frame
+  /// timing bars.
+  ///
+  /// There is no min value as the bar chart always starts from 0, which means
+  /// that we view the y-axis from 0 to `barRangeMax`.
+  ///
+  /// Defaults to 24ms.
+  final Duration barRangeMax;
 
   /// Color that is used for the background of the individual charts.
   ///
@@ -84,6 +124,9 @@ class CustomPerformanceOverlay extends StatelessWidget {
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: _CustomPerformanceOverlay(
+                sampleSize: sampleSize,
+                targetFrameTime: targetFrameTime,
+                barRangeMax: barRangeMax,
                 backgroundColor: backgroundColor,
                 textColor: textColor,
                 textBackgroundColor: textBackgroundColor,
@@ -98,41 +141,31 @@ class CustomPerformanceOverlay extends StatelessWidget {
   }
 }
 
-/// How many frame timings will be stored for extrapolating the FPS (and showing
-/// the bar chart).
-///
-/// The first few readings will be below the sample size.
-const _kSampleSize = 32;
-
-/// Indicates the y-axis for the frame timing bars in ms.
-///
-/// This means that we view the y-axis from 0 to [_kMaxFrameDuration]ms.
-const _kMaxFrameDuration = Duration(milliseconds: 24);
-
-/// Draws a line at y = [_kTargetFrameTiming]ms indicating the goal time span
-/// for frames.
-const _kTargetFrameTiming = Duration(milliseconds: 16);
-
 /// Implementation of a simple custom performance overlay that tries to
 /// show the current FPS.
 ///
-/// todo(creativecreatorormaybenot): remove section.
-///
-/// I came up with my own concept for how to use frame begin time and frame
+/// This is a custom concept for how to use frame begin time and frame
 /// end time to draw a bar chart and extrapolate FPS numbers (using
 /// [SchedulerBinding.addPersistentFrameCallback] and post frame callbacks
-/// for example. But it turns out [SchedulerBinding.addTimingsCallback]
+/// for example). But it turns out [SchedulerBinding.addTimingsCallback]
 /// already implements curated reports that also work on web :)
-/// You can read the [SchedulerBinding.addTimingsCallback] docs for further
-/// information. It will also lead you to [PlatformDispatcher.onReportTimings].
 ///
 /// This widget handles both receiving the frame timings, storing a
 /// [_kSampleSize], and drawing a stacked bar chart that shows all
 /// [FrameTiming] properties.
+///
+/// See also:
+///
+/// * The [SchedulerBinding.addTimingsCallback] docs for further
+///   information.
+/// * [PlatformDispatcher.onReportTimings], which is the source of the data.
 class _CustomPerformanceOverlay extends StatefulWidget {
   /// Constructs a [_CustomPerformanceOverlay] widget.
   const _CustomPerformanceOverlay({
     Key? key,
+    required this.sampleSize,
+    required this.targetFrameTime,
+    required this.barRangeMax,
     required this.backgroundColor,
     required this.textColor,
     required this.textBackgroundColor,
@@ -140,6 +173,10 @@ class _CustomPerformanceOverlay extends StatefulWidget {
     required this.rasterColor,
     required this.highLatencyColor,
   }) : super(key: key);
+
+  final int sampleSize;
+  final Duration targetFrameTime;
+  final Duration barRangeMax;
 
   final Color backgroundColor;
   final Color textColor;
@@ -185,9 +222,9 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
         _samples = combinedSamples.sublist(max(
           0,
           // Drop all samples exceeding the sample size to the left.
-          combinedSamples.length - _kSampleSize,
+          combinedSamples.length - widget.sampleSize,
         ));
-        assert(_samples.length <= _kSampleSize);
+        assert(_samples.length <= widget.sampleSize);
       });
     });
   }
@@ -212,6 +249,9 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
                 child: _PerformanceChart(
                   type: 'UI',
                   samples: [for (final e in _samples) e.rasterDuration],
+                  sampleSize: widget.sampleSize,
+                  targetFrameTime: widget.targetFrameTime,
+                  barRangeMax: widget.barRangeMax,
                   color: widget.uiColor,
                   textStyle: textStyle,
                 ),
@@ -224,6 +264,9 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
                 child: _PerformanceChart(
                   type: 'raster',
                   samples: [for (final e in _samples) e.buildDuration],
+                  sampleSize: widget.sampleSize,
+                  targetFrameTime: widget.targetFrameTime,
+                  barRangeMax: widget.barRangeMax,
                   color: widget.rasterColor,
                   textStyle: textStyle,
                 ),
@@ -236,6 +279,9 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
                 child: _PerformanceChart(
                   type: 'high latency',
                   samples: [for (final e in _samples) e.totalSpan],
+                  sampleSize: widget.sampleSize,
+                  targetFrameTime: widget.targetFrameTime,
+                  barRangeMax: widget.barRangeMax,
                   color: widget.highLatencyColor,
                   textStyle: textStyle,
                 ),
@@ -255,9 +301,12 @@ class _PerformanceChart extends StatelessWidget {
     Key? key,
     required this.type,
     required this.samples,
+    required this.sampleSize,
+    required this.targetFrameTime,
+    required this.barRangeMax,
     required this.color,
     required this.textStyle,
-  })  : assert(samples.length <= _kSampleSize),
+  })  : assert(samples.length <= sampleSize),
         super(key: key);
 
   /// The measurement type.
@@ -268,6 +317,15 @@ class _PerformanceChart extends StatelessWidget {
 
   /// The duration samples for the given [type].
   final List<Duration> samples;
+
+  /// The maximum number of samples.
+  ///
+  /// The chart will always be drawn to the extent of this sample size and
+  /// [samples] must not be longer than this.
+  final int sampleSize;
+
+  final Duration targetFrameTime;
+  final Duration barRangeMax;
 
   /// The bar color.
   final Color color;
@@ -293,7 +351,13 @@ class _PerformanceChart extends StatelessWidget {
       children: [
         SizedBox.expand(
           child: CustomPaint(
-            painter: _OverlayPainter(samples, color),
+            painter: _OverlayPainter(
+              samples,
+              sampleSize,
+              targetFrameTime,
+              barRangeMax,
+              color,
+            ),
           ),
         ),
         Positioned(
@@ -307,15 +371,13 @@ class _PerformanceChart extends StatelessWidget {
                   TextSpan(
                     text: 'max ${maxDuration.ms}ms ',
                     style: TextStyle(
-                      color: maxDuration <= _kTargetFrameTiming
-                          ? null
-                          : Colors.red,
+                      color: maxDuration <= targetFrameTime ? null : Colors.red,
                     ),
                   ),
                   TextSpan(
                     text: 'avg ${avg.ms}ms\n',
                     style: TextStyle(
-                      color: avg <= _kTargetFrameTiming ? null : Colors.red,
+                      color: avg <= targetFrameTime ? null : Colors.red,
                     ),
                   ),
                   TextSpan(
@@ -333,34 +395,42 @@ class _PerformanceChart extends StatelessWidget {
 }
 
 class _OverlayPainter extends CustomPainter {
-  _OverlayPainter(this.samples, this.color);
+  _OverlayPainter(
+    this.samples,
+    this.sampleSize,
+    this.targetFrameTime,
+    this.barRangeMax,
+    this.color,
+  );
 
   final List<Duration> samples;
+  final int sampleSize;
+  final Duration targetFrameTime;
+  final Duration barRangeMax;
   final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final aimHeight =
-        size.height * (1 - _kTargetFrameTiming / _kMaxFrameDuration);
+    final aimHeight = size.height * (1 - targetFrameTime / barRangeMax);
     canvas.drawLine(
       Offset(0, aimHeight),
       Offset(size.width, aimHeight),
       Paint()..color = Colors.black,
     );
 
-    final barWidth = size.width / _kSampleSize;
+    final barWidth = size.width / sampleSize;
     final paint = Paint()..color = color;
-    for (var i = _kSampleSize - 1; i >= 0; i--) {
-      final shifted = i - _kSampleSize + samples.length;
+    for (var i = sampleSize - 1; i >= 0; i--) {
+      final shifted = i - sampleSize + samples.length;
       if (shifted < 0) break;
       final timing = samples[shifted];
 
       final x = barWidth * i;
-      final barExtent = timing / _kMaxFrameDuration;
+      final barExtent = timing / barRangeMax;
       canvas.drawRect(
         Rect.fromLTWH(x, size.height * (1 - barExtent), barWidth,
             size.height * barExtent),
-        timing <= _kTargetFrameTiming ? paint : (Paint()..color = Colors.red),
+        timing <= targetFrameTime ? paint : (Paint()..color = Colors.red),
       );
     }
   }

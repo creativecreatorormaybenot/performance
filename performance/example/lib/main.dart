@@ -106,7 +106,7 @@ class _HomePageState extends State<_HomePage> {
               child: Stack(
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Spacer(),
                       Row(

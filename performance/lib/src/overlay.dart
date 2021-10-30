@@ -277,8 +277,6 @@ class _PerformanceChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (samples.isEmpty) return const SizedBox();
-
     var maxDuration = Duration.zero;
     var cumulative = Duration.zero;
     for (var i = 0; i < samples.length; i++) {
@@ -286,10 +284,10 @@ class _PerformanceChart extends StatelessWidget {
       maxDuration = sample > maxDuration ? sample : maxDuration;
       cumulative += sample;
     }
-    final avg = Duration(
-      microseconds: cumulative.inMicroseconds ~/ samples.length,
-    );
-    final fps = 1e6 / avg.inMicroseconds;
+    final avg = samples.isEmpty
+        ? Duration.zero
+        : Duration(microseconds: cumulative.inMicroseconds ~/ samples.length);
+    final fps = samples.isEmpty ? 0 : 1e6 / avg.inMicroseconds;
 
     return Stack(
       children: [
@@ -298,38 +296,37 @@ class _PerformanceChart extends StatelessWidget {
             painter: _OverlayPainter(samples, color),
           ),
         ),
-        if (samples.isNotEmpty)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(2),
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'max ${maxDuration.ms}ms ',
-                      style: TextStyle(
-                        color: maxDuration <= _kTargetFrameTiming
-                            ? null
-                            : Colors.red,
-                      ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'max ${maxDuration.ms}ms ',
+                    style: TextStyle(
+                      color: maxDuration <= _kTargetFrameTiming
+                          ? null
+                          : Colors.red,
                     ),
-                    TextSpan(
-                      text: 'avg ${avg.ms}ms\n',
-                      style: TextStyle(
-                        color: avg <= _kTargetFrameTiming ? null : Colors.red,
-                      ),
+                  ),
+                  TextSpan(
+                    text: 'avg ${avg.ms}ms\n',
+                    style: TextStyle(
+                      color: avg <= _kTargetFrameTiming ? null : Colors.red,
                     ),
-                    TextSpan(
-                      text: '$type <= ${fps.toStringAsFixed(1)} FPS',
-                    ),
-                  ],
-                  style: textStyle,
-                ),
+                  ),
+                  TextSpan(
+                    text: '$type <= ${fps.toStringAsFixed(1)} FPS',
+                  ),
+                ],
+                style: textStyle,
               ),
             ),
           ),
+        ),
       ],
     );
   }

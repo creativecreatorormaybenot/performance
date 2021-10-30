@@ -40,7 +40,7 @@ class _HomePageState extends State<_HomePage> {
   late final _funvas = ExampleFunvas();
 
   var _funvasSize = 3 / 4;
-  var _funvasPlaying = true;
+  var _funvasPlaying = false;
   var _overlayEnabled = true;
 
   @override
@@ -51,7 +51,7 @@ class _HomePageState extends State<_HomePage> {
         child: Row(
           children: [
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -100,39 +100,57 @@ class _HomePageState extends State<_HomePage> {
               ),
             ),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              flex: 2,
+              child: Stack(
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('play funvas'),
-                      Switch(
-                        activeColor: Theme.of(context).colorScheme.secondary,
-                        value: _funvasPlaying,
-                        onChanged: (value) {
-                          setState(() {
-                            _funvasPlaying = value;
-                          });
-                        },
-                      ),
-                    ],
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('play funvas'),
+                            Switch(
+                              activeColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              value: _funvasPlaying,
+                              onChanged: (value) {
+                                setState(() {
+                                  _funvasPlaying = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('enable overlay'),
+                            Switch(
+                              activeColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              value: _overlayEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  _overlayEnabled = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('enable overlay'),
-                      Switch(
-                        activeColor: Theme.of(context).colorScheme.secondary,
-                        value: _overlayEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            _overlayEnabled = value;
-                          });
-                        },
-                      ),
-                    ],
+                  const Positioned(
+                    bottom: 32,
+                    left: 32,
+                    right: 32,
+                    child: Text(
+                      'interact with the demo to observe performance :)',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),

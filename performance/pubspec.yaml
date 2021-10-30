@@ -1,6 +1,6 @@
 name: performance
-description: Performance overlay for Flutter apps that works on web.
-version: 0.1.0
+description: Performance overlay package for Flutter apps that works on web.
+version: 0.1.0+1
 homepage: https://github.com/creativecreatorormaybenot/performance/tree/main/performance
 
 environment:

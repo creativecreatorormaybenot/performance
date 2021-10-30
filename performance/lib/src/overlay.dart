@@ -116,19 +116,21 @@ const _kTargetFrameTiming = Duration(milliseconds: 16);
 /// Implementation of a simple custom performance overlay that tries to
 /// show the current FPS.
 ///
-/// todo(creativecreatorormaybenot): remove section.
-///
-/// I came up with my own concept for how to use frame begin time and frame
+/// This is a custom concept for how to use frame begin time and frame
 /// end time to draw a bar chart and extrapolate FPS numbers (using
 /// [SchedulerBinding.addPersistentFrameCallback] and post frame callbacks
-/// for example. But it turns out [SchedulerBinding.addTimingsCallback]
+/// for example). But it turns out [SchedulerBinding.addTimingsCallback]
 /// already implements curated reports that also work on web :)
-/// You can read the [SchedulerBinding.addTimingsCallback] docs for further
-/// information. It will also lead you to [PlatformDispatcher.onReportTimings].
 ///
 /// This widget handles both receiving the frame timings, storing a
 /// [_kSampleSize], and drawing a stacked bar chart that shows all
 /// [FrameTiming] properties.
+///
+/// See also:
+///
+/// * The [SchedulerBinding.addTimingsCallback] docs for further
+///   information.
+/// * [PlatformDispatcher.onReportTimings], which is the source of the data.
 class _CustomPerformanceOverlay extends StatefulWidget {
   /// Constructs a [_CustomPerformanceOverlay] widget.
   const _CustomPerformanceOverlay({

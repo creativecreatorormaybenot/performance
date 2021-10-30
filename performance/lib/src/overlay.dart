@@ -481,5 +481,5 @@ extension on Duration {
   double operator /(Duration other) => inMicroseconds / other.inMicroseconds;
 
   /// The duration in milliseconds as a string with 1 decimal place.
-  String get ms => inMilliseconds.toStringAsFixed(1);
+  String get ms => (inMicroseconds / 1e3).toStringAsFixed(1);
 }

@@ -215,6 +215,7 @@ class _CustomPerformanceOverlay extends StatefulWidget {
 
 class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
   var _samples = <FrameTiming>[];
+  var _skippedFirstSample = false;
 
   @override
   void initState() {
@@ -230,6 +231,14 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
 
   void _timingsCallback(List<FrameTiming> frameTimings) {
     if (!mounted) return;
+
+    if (!_skippedFirstSample) {
+      // Throw away the first sample since it seems to always be some cumulative
+      // value that does not at all represent actual performance.
+      frameTimings = frameTimings.sublist(1);
+      _skippedFirstSample = true;
+    }
+
     final combinedSamples = [
       ..._samples,
       ...frameTimings,

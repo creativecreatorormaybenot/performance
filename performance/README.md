@@ -1,39 +1,57 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# performance [![GitHub stars][github badge]][repository] [![Pub version][pub badge]][pub] [![demo badge]][demo] [![Twitter Follow][twitter badge]][twitter]
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+Performance overlay package for Flutter apps that works on web.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+![sample]
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package, follow the [installing guide].
 
-## Usage
+### Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Adding the performance overlay is as simple as wrapping your app in the
+`CustomPerformanceOverlay` widget:
 
 ```dart
-const like = 'sample';
+return CustomPerformanceOverlay(
+  child: child,
+);
 ```
 
-## Additional information
+You can also disable it on-demand using the `enabled` parameter:
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+```dart
+return CustomPerformanceOverlay(
+  enabled: false,
+  child: child,
+);
+```
+
+Furthermore, you can also use the following parameters for customization:
+
+* `alignment` and `scale` for alignment and sizing of the overlay.
+* `sampleSize`, `targetFrameTime`, and `barRangeMax` for how the performance
+   data is displayed.
+* `backgroundColor`, `textColor`, `textBackgroundColor`, `uiColor`,
+  `rasterColor`, and `highLatencyColor` for custom theming.
+
+See the [`CustomPerformanceOverlay` class documentation][class docs] for more
+information on each of these members.
+
+---
+
+To understand how to read the charts and limitations, please see the
+[main README on GitHub][repository].
+
+[sample]: https://user-images.githubusercontent.com/19204050/139553925-73c30ef5-8756-4032-a6fb-55866a8979b6.png
+[installing guide]: https://pub.dev/packages/performance/install
+[github badge]: https://img.shields.io/github/stars/creativecreatorormaybenot/performance.svg
+[repository]: https://github.com/creativecreatorormaybenot/performance
+[pub badge]: https://img.shields.io/pub/v/performance.svg
+[pub]: https://pub.dev/packages/performance
+[twitter badge]: https://img.shields.io/twitter/follow/creativemaybeno?label=Follow&style=social
+[twitter]: https://twitter.com/creativemaybeno
+[demo]: https://performance.creativemaybeno.dev
+[demo badge]: https://img.shields.io/badge/web-demo-yellow
+[class docs]: https://pub.dev/documentation/performance/latest/performance/CustomPerformanceOverlay-class.html

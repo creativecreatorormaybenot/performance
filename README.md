@@ -16,7 +16,7 @@ You can read the charts in the performance overlay like this:
   - UI: the time it takes the UI to build.
   - Raster: the time it takes to rasterize the frame.
   - High latency: the total time between vsync start and raster finish, i.e. the
-    time it takes from an input to seeing the new frame.
+    time it takes from an input to seeing the next frame.
 * The "max" value shows how long the worst sample in the displayed range took.
 * The "avg" value represents the average of all samples in the displayed range.
 * The displayed FPS value indicates the *best logically possible* number of

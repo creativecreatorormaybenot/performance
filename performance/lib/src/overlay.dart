@@ -220,12 +220,12 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addTimingsCallback(_timingsCallback);
+    SchedulerBinding.instance.addTimingsCallback(_timingsCallback);
   }
 
   @override
   void dispose() {
-    SchedulerBinding.instance!.removeTimingsCallback(_timingsCallback);
+    SchedulerBinding.instance.removeTimingsCallback(_timingsCallback);
     super.dispose();
   }
 
@@ -248,7 +248,7 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
     // Furthermore, this prevents indefinite rebuilds on desktop as setting
     // state after the timings callback triggers another timings callback but
     // doing so in a post frame callback somehow does not.
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       if (!mounted) return;
       setState(() {
         _samples = combinedSamples.sublist(max(

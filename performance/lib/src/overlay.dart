@@ -220,12 +220,13 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addTimingsCallback(_timingsCallback);
+    _ambiguate(SchedulerBinding.instance)!.addTimingsCallback(_timingsCallback);
   }
 
   @override
   void dispose() {
-    SchedulerBinding.instance!.removeTimingsCallback(_timingsCallback);
+    _ambiguate(SchedulerBinding.instance)!
+        .removeTimingsCallback(_timingsCallback);
     super.dispose();
   }
 
@@ -248,7 +249,7 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
     // Furthermore, this prevents indefinite rebuilds on desktop as setting
     // state after the timings callback triggers another timings callback but
     // doing so in a post frame callback somehow does not.
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+    _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((timeStamp) {
       if (!mounted) return;
       setState(() {
         _samples = combinedSamples.sublist(max(
@@ -483,3 +484,9 @@ extension on Duration {
   /// The duration in milliseconds as a string with 1 decimal place.
   String get ms => (inMicroseconds / 1e3).toStringAsFixed(1);
 }
+
+/// This allows a value of type T or T? to be treated as a value of type T?.
+///
+/// We use this so that APIs that have become non-nullable can still be used
+/// with `!` and `?` to support older versions of the API as well.
+T? _ambiguate<T>(T? value) => value;

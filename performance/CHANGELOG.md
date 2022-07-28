@@ -1,6 +1,6 @@
 ## 0.1.1
 
-* Migrate the code to Flutter 3 by considering `SchedulerBinding.instance` non-nullable.
+* Fixed warnings introduced by Flutter 3 (`SchedulerBinding.instance` is now non-nullable).
 
 ## 0.1.0+1
 

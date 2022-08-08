@@ -3,26 +3,30 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "version.json": "99786903ab0da496aa3a3e36ea0af035",
+  "canvaskit/profiling/canvaskit.js": "ae2949af4efc61d28a4a80fffa1db900",
+"canvaskit/profiling/canvaskit.wasm": "95e736ab31147d1b2c7b25f11d4c32cd",
+"canvaskit/canvaskit.js": "c2b4e5f3d7a3d82aed024e7249a78487",
+"canvaskit/canvaskit.wasm": "4b83d89d9fecbea8ca46f2f760c5a9ba",
+"index.html": "aeae2c2642b6e633f3c1d3afd4e5eff0",
+"/": "aeae2c2642b6e633f3c1d3afd4e5eff0",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"assets/NOTICES": "2fa43a4441509a2cbb9f60264a61ea86",
-"assets/FontManifest.json": "d751713988987e9331980363e24189ce",
-"assets/AssetManifest.json": "99914b932bd37a50b983c5e7c90ae93b",
-"icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
-"icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
-"icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"main.dart.js": "a77e91ec0c9d4078bfd013f39b0d3d5f",
+"main.dart.js": "adeb58d85ab8360abd4ee4471c13a8c4",
 "manifest.json": "8670423301c9378ed692b4499c1b986a",
-"index.html": "99f8076bbc3864d942c18121acadddc3",
-"/": "99f8076bbc3864d942c18121acadddc3"
+"version.json": "63eb09d3c4cbf9efb9e82efd24c49b46",
+"flutter.js": "eb2682e33f25cd8f1fc59011497c35f8",
+"icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
+"icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
+"icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
+"icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
+"assets/FontManifest.json": "d751713988987e9331980363e24189ce",
+"assets/NOTICES": "17a7eb60d6dff781bc3519c96c3662e1",
+"assets/AssetManifest.json": "99914b932bd37a50b983c5e7c90ae93b"
 };
 
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = [
-  "/",
-"main.dart.js",
+  "main.dart.js",
 "index.html",
 "assets/NOTICES",
 "assets/AssetManifest.json",

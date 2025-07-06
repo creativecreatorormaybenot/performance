@@ -15,7 +15,7 @@ class CustomPerformanceOverlay extends StatelessWidget {
   /// Creates a [CustomPerformanceOverlay] widget wrapped around the given
   /// [child] widget.
   const CustomPerformanceOverlay({
-    Key? key,
+    super.key,
     this.enabled = true,
     this.alignment = Alignment.topRight,
     this.scale = 1,
@@ -29,7 +29,7 @@ class CustomPerformanceOverlay extends StatelessWidget {
     this.rasterColor = Colors.blue,
     this.highLatencyColor = Colors.cyan,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// Whether the custom performance overlay should be enabled or not.
   ///
@@ -185,7 +185,6 @@ class CustomPerformanceOverlay extends StatelessWidget {
 class _CustomPerformanceOverlay extends StatefulWidget {
   /// Constructs a [_CustomPerformanceOverlay] widget.
   const _CustomPerformanceOverlay({
-    Key? key,
     required this.sampleSize,
     required this.targetFrameTime,
     required this.barRangeMax,
@@ -195,7 +194,7 @@ class _CustomPerformanceOverlay extends StatefulWidget {
     required this.uiColor,
     required this.rasterColor,
     required this.highLatencyColor,
-  }) : super(key: key);
+  });
 
   final int sampleSize;
   final Duration targetFrameTime;
@@ -330,7 +329,6 @@ class _CustomPerformanceOverlayState extends State<_CustomPerformanceOverlay> {
 class _PerformanceChart extends StatelessWidget {
   /// Constructs a [_PerformanceChart] widget.
   const _PerformanceChart({
-    Key? key,
     required this.type,
     required this.samples,
     required this.sampleSize,
@@ -338,8 +336,7 @@ class _PerformanceChart extends StatelessWidget {
     required this.barRangeMax,
     required this.color,
     required this.textStyle,
-  })  : assert(samples.length <= sampleSize),
-        super(key: key);
+  })  : assert(samples.length <= sampleSize);
 
   /// The measurement type.
   ///

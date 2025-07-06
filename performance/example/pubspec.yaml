@@ -4,10 +4,12 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: ^3.5.0
 
 dependencies:
   flutter:
+    sdk: flutter
+  flutter_web_plugins:
     sdk: flutter
 
   # We include the performance package in the example via path. In your regular
@@ -16,12 +18,11 @@ dependencies:
   performance:
     path: ../
 
-  funvas: ^0.1.6+5
-  url_launcher: ^6.0.12
-  url_strategy: ^0.2.0
+  funvas: ^0.1.8
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^1.0.4
+  flutter_lints: ^5.0.0

@@ -1,3 +1,7 @@
+## 0.2.0
+
+Update dependencies, set 3.24 as min Flutter sdk
+
 ## 0.1.1
 
 * Fixed warnings introduced by Flutter 3 (`SchedulerBinding.instance` is now non-nullable).

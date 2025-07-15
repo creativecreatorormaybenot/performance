@@ -10,11 +10,11 @@ import 'package:url_launcher/link.dart' show LinkTarget;
 class Link extends StatelessWidget {
   /// Creates a [Link] widget.
   const Link({
-    Key? key,
+    super.key,
     required this.url,
     required this.body,
     this.targetBlank = true,
-  }) : super(key: key);
+  });
 
   /// The URL to be opened when clicking the link.
   ///

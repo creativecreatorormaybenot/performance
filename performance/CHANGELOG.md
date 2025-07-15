@@ -1,3 +1,9 @@
+## 0.2.0
+
+- Increased minimum Flutter SDK version to `3.24.0`.
+- Increased minimum Dart SDK version to `3.5.0`.
+- Updated dependencies.
+
 ## 0.1.1
 
 * Fixed warnings introduced by Flutter 3 (`SchedulerBinding.instance` is now non-nullable).

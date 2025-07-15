@@ -15,8 +15,6 @@ jobs:
         channel:
           - 'stable'
           - 'beta'
-          - 'dev'
-          - 'master'
         package:
           - 'performance'
       fail-fast: false
@@ -25,7 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.5
-      - uses: subosito/flutter-action@v1.5.3
+      - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
       - name: pub get
@@ -46,8 +44,6 @@ jobs:
         channel:
           - 'stable'
           - 'beta'
-          - 'dev'
-          - 'master'
         package:
           - 'performance'
       fail-fast: false
@@ -56,7 +52,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.5
-      - uses: subosito/flutter-action@v1.5.3
+      - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
       - run: flutter pub get

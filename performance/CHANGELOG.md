@@ -1,6 +1,8 @@
 ## 0.2.0
 
-Update dependencies, set 3.24 as min Flutter sdk
+- Increased minimum Flutter SDK version to `3.24.0`.
+- Increased minimum Dart SDK version to `3.5.0`.
+- Updated dependencies.
 
 ## 0.1.1
 

@@ -30,7 +30,7 @@ jobs:
         run: flutter pub get
         working-directory: ${{ env.working-directory }}
       - name: dart format
-        run: dart format . --fix --set-exit-if-changed
+        run: dart format . --set-exit-if-changed
         working-directory: ${{ env.working-directory }}
       - run: flutter analyze
         working-directory: ${{ env.working-directory }}

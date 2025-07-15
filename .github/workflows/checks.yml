@@ -15,8 +15,6 @@ jobs:
         channel:
           - 'stable'
           - 'beta'
-          - 'dev'
-          - 'master'
         package:
           - 'performance'
       fail-fast: false
@@ -25,14 +23,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.5
-      - uses: subosito/flutter-action@v1.5.3
+      - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
       - name: pub get
         run: flutter pub get
         working-directory: ${{ env.working-directory }}
       - name: dart format
-        run: dart format . --fix --set-exit-if-changed
+        run: dart format . --set-exit-if-changed
         working-directory: ${{ env.working-directory }}
       - run: flutter analyze
         working-directory: ${{ env.working-directory }}
@@ -46,8 +44,6 @@ jobs:
         channel:
           - 'stable'
           - 'beta'
-          - 'dev'
-          - 'master'
         package:
           - 'performance'
       fail-fast: false
@@ -56,7 +52,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.5
-      - uses: subosito/flutter-action@v1.5.3
+      - uses: subosito/flutter-action@v2
         with:
           channel: ${{ matrix.channel }}
       - run: flutter pub get

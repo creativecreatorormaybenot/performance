@@ -114,6 +114,7 @@ class _HomePageState extends State<_HomePage> {
                         children: [
                           const Text('play funvas'),
                           Switch(
+                            // ignore: deprecated_member_use
                             activeColor:
                                 Theme.of(context).colorScheme.secondary,
                             value: _funvasPlaying,
@@ -130,6 +131,7 @@ class _HomePageState extends State<_HomePage> {
                         children: [
                           const Text('enable overlay'),
                           Switch(
+                            // ignore: deprecated_member_use
                             activeColor:
                                 Theme.of(context).colorScheme.secondary,
                             value: _overlayEnabled,
